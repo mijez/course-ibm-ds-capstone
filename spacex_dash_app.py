@@ -104,11 +104,28 @@ def get_payload_chart(entered_site, payload_range):
     if entered_site != 'ALL':
         # filter by specific site if selected
         data = data.loc[data['Launch Site'].eq(entered_site)]
+        title = f'Launch outcomes for site {entered_site}'
+    else:
+        title = 'Launch outcomes for all sites'
 
-    fig = px.scatter(data, x='Payload Mass (kg)', y='class', color='Booster Version Category')
+    fig = px.scatter(
+        data,
+        x='Payload Mass (kg)',
+        y='class',
+        color='Booster Version Category',
+        opacity=0.9)
+
+    fig.update_traces(marker=dict(size=15))
+
+    fig.update_yaxes(
+        title_text='Launch Outcome',
+        tickvals=[0, 1],
+        ticktext=['failed', 'success']
+    )
 
     # improve legend appearance
     fig.update_layout(
+        title=title,
         legend=dict(
             xanchor='right',
             yanchor='middle',
